@@ -79,10 +79,10 @@ public class AVSAudioPlayer {
 
     // VLCJ volumes are between 0-200. Alexa volumes are from 0-100. These constants are used to
     // convert and limit volume values.
-    private static final long VLCJ_VOLUME_SCALAR = 2;
+    private static final long VLCJ_VOLUME_SCALAR = 1;
     private static final int VLCJ_MIN_VOLUME = 0;
-    private static final int VLCJ_DEFAULT_VOLUME = 100;
-    private static final int VLCJ_MAX_VOLUME = 200;
+    private static final int VLCJ_DEFAULT_VOLUME = 50;
+    private static final int VLCJ_MAX_VOLUME = 100;
 
     // VLC's elapsed time doesn't work correctly. So we're using System.nanoTime() to get accurate
     // timestamps
@@ -246,7 +246,7 @@ public class AVSAudioPlayer {
 
     private void setupAudioPlayer() {
         audioPlayer = new AudioMediaPlayerComponent();
-
+        audioPlayer.getMediaPlayer().setVolume(VLCJ_DEFAULT_VOLUME);
         audioPlayer.getMediaPlayer().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
 
             private boolean playbackStartedSuccessfully;

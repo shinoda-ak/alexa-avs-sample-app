@@ -366,6 +366,8 @@ Companion_Service_Loc=$Samples_Loc/companionService
 Kitt_Ai_Loc=$Wake_Word_Agent_Loc/kitt_ai
 Sensory_Loc=$Wake_Word_Agent_Loc/sensory
 External_Loc=$Wake_Word_Agent_Loc/ext
+tLED_Loc=$Samples_Loc/tLED
+Recording_Agent_Loc=$Samples_Loc/recordingAgent
 Locale="en-US"
 
 mkdir $Kitt_Ai_Loc
@@ -584,8 +586,30 @@ echo "========== Compiling Wake Word Agent =========="
 cd $Wake_Word_Agent_Loc/src && cmake . && make -j4
 cd $Wake_Word_Agent_Loc/tst && cmake . && make -j4
 
+echo "========== Installing LED dependencies =========="
+sudo apt-get install scons swig python-dev libusb-1.0-0-dev git -y
+sudo pip install tendo
+
+cd $tLED_Loc
+chmod +x host_demo.exe
+cd rpi_ws281x-master
+sudo scons
+cd python
+sudo python setup.py install
+
+echo "========== Compiling Recording Agent =========="
+cd $Recording_Agent_Loc
+make
+chmod +x run.sh
+
+
 chown -R $User:$Group $Origin
 chown -R $User:$Group /home/$User/.asoundrc
+
+cp $Origin/leftarc /home/$User/leftarc
+echo "cd $Origin" > /home/$User/startup.sh
+cat $Origin/startup.sh >> /home/$User/startup.sh
+chmod +x /home/$User/startup.sh
 
 echo ""
 echo '============================='
@@ -595,13 +619,15 @@ echo '*****************************'
 echo '============================='
 echo ""
 
-Number_Terminals=2
+Number_Terminals=4
 if [ "$Wake_Word_Detection_Enabled" = "true" ]; then
-  Number_Terminals=3
+  Number_Terminals=5
 fi
 echo "To run the demo, do the following in $Number_Terminals seperate terminals:"
 echo "Run the companion service: cd $Companion_Service_Loc && npm start"
 echo "Run the AVS Java Client: cd $Java_Client_Loc && mvn exec:exec"
+echo "Run the Recording Agent: cd $Recording_Agent_Loc && ./run.sh"
+echo "Run the tLED Server: cd $tLED_Loc && sudo python tLEDServer.py"
 if [ "$Wake_Word_Detection_Enabled" = "true" ]; then
   echo "Run the wake word agent: "
   echo "  Sensory: cd $Wake_Word_Agent_Loc/src && ./wakeWordAgent -e sensory"

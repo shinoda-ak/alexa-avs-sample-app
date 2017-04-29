@@ -31,6 +31,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import com.conexant.alexa.avs.LEDHTTP;
+
 public class ListenView extends JPanel implements ListenHandler, SpeechStateChangeListener {
     private static final Logger log = LoggerFactory.getLogger(ListenView.class);
 
@@ -92,6 +94,7 @@ public class ListenView extends JPanel implements ListenHandler, SpeechStateChan
 
         @Override
         public void onRequestFinished() {
+            LEDHTTP.makeHTTPRequest(LEDHTTP.s_cloudstop);
             // In case we get a response from the server without
             // terminating the stream ourselves.
             if (buttonState == ButtonState.STOP) {
@@ -103,8 +106,9 @@ public class ListenView extends JPanel implements ListenHandler, SpeechStateChan
         @Override
         public void onRequestError(Throwable e) {
             log.error("An error occured creating speech request", e);
-            JOptionPane.showMessageDialog(ListenView.this, e.getMessage(), ERROR_DIALOG_TITLE,
-                    JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(ListenView.this, e.getMessage(), ERROR_DIALOG_TITLE,
+            //        JOptionPane.ERROR_MESSAGE);
+            LEDHTTP.makeHTTPRequest(LEDHTTP.s_error);
             listenButtonPressed();
             finishProcessing();
         }

@@ -65,11 +65,13 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import javax.sound.sampled.LineUnavailableException;
 
+import com.conexant.alexa.avs.LEDHTTP;
+
 public class AVSController implements RecordingStateListener, AlertHandler, AlertEventListener,
         AccessTokenListener, DirectiveDispatcher, AlexaSpeechListener, ParsingFailedHandler,
         UserActivityListener, WakeWordDetectedHandler {
 
-    private AudioCapture microphone;
+    private AudioCaptureSocketed microphone;
     private AVSClient avsClient;
 
     private final DialogRequestIdAuthority dialogRequestIdAuthority;
@@ -147,6 +149,7 @@ public class AVSController implements RecordingStateListener, AlertHandler, Aler
             public void onSuccess() {
                 loadBeforeSync.countDown();
                 sendSyncAndLocale();
+                LEDHTTP.makeHTTPRequest(LEDHTTP.s_ready);
             }
 
             @Override
@@ -217,7 +220,7 @@ public class AVSController implements RecordingStateListener, AlertHandler, Aler
     }
 
     private void getMicrophone(AVSController controller) throws LineUnavailableException {
-        controller.microphone = AudioCapture.getAudioHardware(AUDIO_TYPE.getAudioFormat(),
+        controller.microphone = AudioCaptureSocketed.getAudioHardware(AUDIO_TYPE.getAudioFormat(),
                 new MicrophoneLineFactory());
     }
 
@@ -306,6 +309,7 @@ public class AVSController implements RecordingStateListener, AlertHandler, Aler
         } catch (Exception e) {
             player.playMp3FromResource(ERROR_SOUND);
             requestListener.onRequestError(e);
+            LEDHTTP.makeHTTPRequest(LEDHTTP.s_error);
         }
     }
 
@@ -444,8 +448,10 @@ public class AVSController implements RecordingStateListener, AlertHandler, Aler
         String directiveName = directive.getName();
         if (AVSAPIConstants.AudioPlayer.Directives.Play.NAME.equals(directiveName)) {
             player.handlePlay((Play) directive.getPayload());
+            LEDHTTP.makeHTTPRequest(LEDHTTP.s_music);
         } else if (AVSAPIConstants.AudioPlayer.Directives.Stop.NAME.equals(directiveName)) {
             player.handleStop();
+            LEDHTTP.makeHTTPRequest(LEDHTTP.s_finished);
         } else if (AVSAPIConstants.AudioPlayer.Directives.ClearQueue.NAME.equals(directiveName)) {
             player.handleClearQueue((ClearQueue) directive.getPayload());
         } else {
@@ -485,6 +491,7 @@ public class AVSController implements RecordingStateListener, AlertHandler, Aler
             // implement a listen timeout event, as described here:
             // https://developer.amazon.com/public/solutions/alexa/alexa-voice-service/rest/speechrecognizer-listentimeout-request
             notifyExpectSpeechDirective();
+            LEDHTTP.makeHTTPRequest(LEDHTTP.s_recording);
         } else if (AVSAPIConstants.SpeechRecognizer.Directives.StopCapture.NAME
                 .equals(directiveName)) {
             stopCaptureHandler.onStopCaptureDirective();
@@ -526,8 +533,10 @@ public class AVSController implements RecordingStateListener, AlertHandler, Aler
         String directiveName = directive.getName();
         if (AVSAPIConstants.Speaker.Directives.SetVolume.NAME.equals(directiveName)) {
             player.handleSetVolume((VolumePayload) directive.getPayload());
+            LEDHTTP.makeHTTPRequest(LEDHTTP.s_volume+player.getVolume());
         } else if (AVSAPIConstants.Speaker.Directives.AdjustVolume.NAME.equals(directiveName)) {
             player.handleAdjustVolume((VolumePayload) directive.getPayload());
+            LEDHTTP.makeHTTPRequest(LEDHTTP.s_volume+player.getVolume());
         } else if (AVSAPIConstants.Speaker.Directives.SetMute.NAME.equals(directiveName)) {
             player.handleSetMute((SetMute) directive.getPayload());
         } else {
@@ -581,13 +590,15 @@ public class AVSController implements RecordingStateListener, AlertHandler, Aler
     // audio state callback for when recording has started
     @Override
     public void recordingStarted() {
-        player.playMp3FromResource(START_SOUND);
+        //player.playMp3FromResource(START_SOUND);
+        LEDHTTP.makeHTTPRequest(LEDHTTP.s_recording);
     }
 
     // audio state callback for when recording has completed
     @Override
     public void recordingCompleted() {
-        player.playMp3FromResource(END_SOUND);
+        //player.playMp3FromResource(END_SOUND);
+        LEDHTTP.makeHTTPRequest(LEDHTTP.s_cloud);
     }
 
     public boolean isSpeaking() {
@@ -601,7 +612,7 @@ public class AVSController implements RecordingStateListener, AlertHandler, Aler
     @Override
     public void onAlertStarted(String alertToken) {
         sendRequest(RequestFactory.createAlertsAlertStartedEvent(alertToken));
-
+        LEDHTTP.makeHTTPRequest(LEDHTTP.s_alarmstart);
         if (player.isSpeaking()) {
             sendRequest(RequestFactory.createAlertsAlertEnteredBackgroundEvent(alertToken));
         } else {
@@ -612,6 +623,7 @@ public class AVSController implements RecordingStateListener, AlertHandler, Aler
     @Override
     public void onAlertStopped(String alertToken) {
         sendRequest(RequestFactory.createAlertsAlertStoppedEvent(alertToken));
+        LEDHTTP.makeHTTPRequest(LEDHTTP.s_alarmstop);
     }
 
     @Override
@@ -645,6 +657,7 @@ public class AVSController implements RecordingStateListener, AlertHandler, Aler
     @Override
     public void onAlexaSpeechStarted() {
         dependentDirectiveThread.block();
+        LEDHTTP.makeHTTPRequest(LEDHTTP.s_speaking);
 
         if (alertManager.hasActiveAlerts()) {
             for (String alertToken : alertManager.getActiveAlerts()) {
@@ -660,13 +673,17 @@ public class AVSController implements RecordingStateListener, AlertHandler, Aler
         if (alertManager.hasActiveAlerts()) {
             for (String alertToken : alertManager.getActiveAlerts()) {
                 sendRequest(RequestFactory.createAlertsAlertEnteredForegroundEvent(alertToken));
+                LEDHTTP.makeHTTPRequest(LEDHTTP.s_alarmstart);
             }
         }
+        else
+            LEDHTTP.makeHTTPRequest(LEDHTTP.s_finished);
     }
 
     @Override
     public void onParsingFailed(String unparseable) {
         String message = "Failed to parse message from AVS";
+        LEDHTTP.makeHTTPRequest(LEDHTTP.s_error);
         sendRequest(RequestFactory.createSystemExceptionEncounteredEvent(unparseable,
                 ExceptionType.UNEXPECTED_INFORMATION_RECEIVED, message, player.getPlaybackState(),
                 player.getSpeechState(), alertManager.getState(), player.getVolumeState()));
