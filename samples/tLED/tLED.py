@@ -1,4 +1,4 @@
-# © 2017 Conexant Systems, LLC
+# Copyright 2017 Conexant Systems, LLC
  
  
 # Permission is hereby granted by Conexant, free of charge, to any developer obtaining a copy

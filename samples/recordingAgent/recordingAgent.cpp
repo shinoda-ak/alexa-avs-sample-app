@@ -120,6 +120,8 @@ int main(int argc, char *argv[])
 			}
 		}
 		catch(...)
+		{
 			printf("Exception occurred while reading or sending");
+		}
 	}
 }
