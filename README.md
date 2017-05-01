@@ -7,6 +7,7 @@ This project provides a step-by-step walkthrough to help you build a **hands-fre
 *NEW!* - [Click here](../../wiki/Conexant4Mic-Raspberry-Pi) for instructions to build the AVS Prototype using a Raspberry Pi and the Conexant 4-Mic Development Kit for Amazon AVS
 
 [Click here](../../wiki/Conexant2Mic-Raspberry-Pi) for instructions to build the AVS Prototype using a Raspberry Pi and the Conexant 2-Mic Development Kit for Amazon AVS
+
 ---
 
 ## What is AVS?
