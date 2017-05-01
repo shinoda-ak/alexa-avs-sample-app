@@ -1,10 +1,11 @@
-![](../../wiki/assets/alexa-logo-3.png)
+![](../../wiki/assets/conexant-alexa-1.png)
 
 ## About the project
 
 This project provides a step-by-step walkthrough to help you build a **hands-free** [Alexa Voice Service](https://developer.amazon.com/avs) (AVS) prototype in 60 minutes, using wake word engines from [Sensory](https://github.com/Sensory/alexa-rpi) or [KITT.AI](https://github.com/Kitt-AI/snowboy). Now, in addition to pushing a button to "start listening", you can now also just say the wake word "Alexa", much like the [Amazon Echo](https://amazon.com/echo). You can find step-by-step instructions to set up the hands-free prototype with the Conexant AudioSmart 4-mic Development Kit for Amazon AVS [RPi2 + Conexant 4-mic](../../wiki/Conexant4Mic-Raspberry-Pi).
 
 *NEW!* - [Click here](../../wiki/Conexant4Mic-Raspberry-Pi) for instructions to build the AVS Prototype using a Raspberry Pi and the Conexant 4-Mic Development Kit for Amazon AVS
+
 [Click here](../../wiki/Conexant2Mic-Raspberry-Pi) for instructions to build the AVS Prototype using a Raspberry Pi and the Conexant 2-Mic Development Kit for Amazon AVS
 ---
 
