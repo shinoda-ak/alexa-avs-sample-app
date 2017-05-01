@@ -1,4 +1,4 @@
-![](../../wiki/assets/conexant-alexa-1.png)
+![](../../wiki/assets/conexant-alexa.jpg)
 
 ## About the project
 
