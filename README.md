@@ -2,10 +2,10 @@
 
 ## About the project
 
-This project provides a step-by-step walkthrough to help you build a **hands-free** [Alexa Voice Service](https://developer.amazon.com/avs) (AVS) prototype in 60 minutes, using wake word engines from [Sensory](https://github.com/Sensory/alexa-rpi) or [KITT.AI](https://github.com/Kitt-AI/snowboy). Now, in addition to pushing a button to "start listening", you can now also just say the wake word "Alexa", much like the [Amazon Echo](https://amazon.com/echo). You can find step-by-step instructions to set up the hands-free prototype on [Raspberry Pi](../../wiki/Raspberry-Pi), or follow the instructions to set up the push-to-talk only prototype on [Linux](../../wiki/Linux), [Mac](../../wiki/Mac), or [Windows](../../wiki/Windows).
+This project provides a step-by-step walkthrough to help you build a **hands-free** [Alexa Voice Service](https://developer.amazon.com/avs) (AVS) prototype in 60 minutes, using wake word engines from [Sensory](https://github.com/Sensory/alexa-rpi) or [KITT.AI](https://github.com/Kitt-AI/snowboy). Now, in addition to pushing a button to "start listening", you can now also just say the wake word "Alexa", much like the [Amazon Echo](https://amazon.com/echo). You can find step-by-step instructions to set up the hands-free prototype with the Conexant AudioSmart 4-mic Development Kit for Amazon AVS [RPi2 + Conexant 4-mic](../../wiki/Conexant4Mic-Raspberry-Pi).
 
-*NEW!* - [Click here](../../wiki/Conexant2Mic-Raspberry-Pi) for instructions to build the AVS Prototype using a Raspberry Pi and the Conexant 2-Mic Development Kit for Amazon AVS
-
+*NEW!* - [Click here](../../wiki/Conexant4Mic-Raspberry-Pi) for instructions to build the AVS Prototype using a Raspberry Pi and the Conexant 4-Mic Development Kit for Amazon AVS
+[Click here](../../wiki/Conexant2Mic-Raspberry-Pi) for instructions to build the AVS Prototype using a Raspberry Pi and the Conexant 2-Mic Development Kit for Amazon AVS
 ---
 
 ## What is AVS?
@@ -16,10 +16,11 @@ This project provides a step-by-step walkthrough to help you build a **hands-fre
 
 ## What's new?
 
-**April 20, 2017:**  
+**May 4th, 2017:**  
 
 *Updates*  
 
+* Conexant 4-mic Development Kit is now Available. [Click here](http://www.conexant.com/amazon-avs/ds20924/) 
 * The companion service persists refresh tokens between restarts. This means you won't have to authenticate each time you bring up the sample app. Read about the update on the [Alexa Blog »](https://developer.amazon.com/blogs/alexa/post/bb4a34ad-f805-43d9-bbe0-c113105dd8fd/understanding-login-authentication-with-the-avs-sample-app-and-the-node-js-server).  
 * The **Listen** button has been replaced with a microphone icon.  
 * The sample app uses new Alexa wake word models from KITT.ai.  
@@ -61,11 +62,8 @@ This project provides a step-by-step walkthrough to help you build a **hands-fre
 
 You can set up this project on the following platforms. Please choose the platform you'd like to set this up on -
 
-* [Raspberry Pi](../../wiki/Raspberry-Pi), or
-* [Linux](../../wiki/Linux), or
-* [Mac](../../wiki/Mac), or
-* [Windows](../../wiki/Windows)
-* *New!* [Raspberry Pi + Conexant 2-Mic Development Kit for Amazon AVS](../../wiki/Conexant2Mic-Raspberry-Pi)
+* *NEW* [Raspberry Pi + Conexant 4-Mic Development Kit for Amazon AVS](../../wiki/Conexant4Mic-Raspberry-Pi), or
+* [Raspberry Pi + Conexant 2-Mic Development Kit for Amazon AVS](../../wiki/Conexant2Mic-Raspberry-Pi)
 
 ---
 
