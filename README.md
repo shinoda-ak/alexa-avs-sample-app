@@ -42,7 +42,7 @@ This project provides a step-by-step walkthrough to help you build a **hands-fre
 
 *Known Issues*
 
-* To log out of the java sample app you must delete your `refresh_tokens` file in the `/samples/companionService` folder. Otherwise, the sample app will authenticate on each reboot. [Click here for log out instructions](Sample-App-Log-Out-Instructions).
+* To log out of the java sample app follow these instructions: [Click here for log out instructions]((../../wiki/Sample-App-Log-Out-Instructions).
 
 ---
 
@@ -72,5 +72,5 @@ You can set up this project on the following platforms. Please choose the platfo
 ## Contribute 
 
 * Want to report a bug or request an update to the documentation? See [CONTRIBUTING.md](https://github.com/alexa/alexa-avs-sample-app/blob/master/CONTRIBUTING.md).  
-* Have questions or need help building the sample app? Open a [new issue](https://github.com/alexa/alexa-avs-sample-app/issues/new).
+* Have questions or need help building the sample app? Open a [new issue](https://github.com/conexant/alexa-avs-sample-app/issues/new).
 
