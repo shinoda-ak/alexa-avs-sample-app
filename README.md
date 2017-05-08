@@ -6,7 +6,7 @@ This project provides a step-by-step walkthrough to help you build a **hands-fre
 
 *NEW!* - [Click here](../../wiki/Conexant4Mic-Raspberry-Pi) for instructions to build the AVS Prototype using a Raspberry Pi and the Conexant 4-Mic Development Kit for Amazon AVS
 
-[Click here](../../wiki/Conexant2Mic-Raspberry-Pi) for instructions to build the AVS Prototype using a Raspberry Pi and the Conexant 2-Mic Development Kit for Amazon AVS
+[Click here](https://github.com/alexa/alexa-avs-sample-app/wiki/Conexant2Mic-Raspberry-Pi) for instructions to build the AVS Prototype using a Raspberry Pi and the Conexant 2-Mic Development Kit for Amazon AVS
 
 ---
 
@@ -22,7 +22,7 @@ This project provides a step-by-step walkthrough to help you build a **hands-fre
 
 *Updates*  
 
-* Conexant 4-mic Development Kit is now Available. [Click here](http://www.conexant.com/amazon-avs/ds20924/) 
+* Conexant 4-Mic Development Kit is now Available. [Click here](http://www.conexant.com/amazon-avs/ds20924/) 
 * The companion service persists refresh tokens between restarts. This means you won't have to authenticate each time you bring up the sample app. Read about the update on the [Alexa Blog »](https://developer.amazon.com/blogs/alexa/post/bb4a34ad-f805-43d9-bbe0-c113105dd8fd/understanding-login-authentication-with-the-avs-sample-app-and-the-node-js-server).  
 * The **Listen** button has been replaced with a microphone icon.  
 * The sample app uses new Alexa wake word models from KITT.ai.  
@@ -65,7 +65,7 @@ This project provides a step-by-step walkthrough to help you build a **hands-fre
 You can set up this project on the following platforms. Please choose the platform you'd like to set this up on -
 
 * *NEW* [Raspberry Pi + Conexant 4-Mic Development Kit for Amazon AVS](../../wiki/Conexant4Mic-Raspberry-Pi), or
-* [Raspberry Pi + Conexant 2-Mic Development Kit for Amazon AVS](../../wiki/Conexant2Mic-Raspberry-Pi)
+* [Raspberry Pi + Conexant 2-Mic Development Kit for Amazon AVS](https://github.com/alexa/alexa-avs-sample-app/wiki/Conexant2Mic-Raspberry-Pi)
 
 ---
 
