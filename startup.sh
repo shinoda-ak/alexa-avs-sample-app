@@ -1,17 +1,18 @@
-cd /home/pi/alexa-avs-sample-app
-cd samples/
-cd tLED/
-lxterminal -e "sudo python tLEDServer.py" &
+cd samples/tLED/
+sudo python tLEDServer.py &
+sleep 10
 cd ../companionService
-lxterminal -e "npm start" &
-cd ../javaclient
-lxterminal -e "mvn exec:exec -Dalpn-boot.version=8.1.6.v20151105" &
-sleep 32
-#Uncomment if run automatically at startup
-cp ~/leftarc ~/.asoundrc
 sleep 1
+npm start &
+cd ../javaclient
+sleep 10
+mvn exec:exec -Dalpn-boot.version=8.1.6.v20151105 &
+sleep 32
+cp ~/leftarc ~/.asoundrc
 cd ../wakeWordAgent/src
-lxterminal -e "./wakeWordAgent -e sensory" &
+sleep 5
+./wakeWordAgent -e gpio &
 cd ../../recordingAgent
-lxterminal -e "./run.sh" &
+sleep 5
+./run.sh &
 cd ~
