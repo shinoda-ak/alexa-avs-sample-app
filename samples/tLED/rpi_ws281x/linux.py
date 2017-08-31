@@ -1,5 +1,5 @@
 #
-# SConscript
+# linux.py
 #
 # Copyright (c) 2014 Jeremy Garff <jer @ jers.net>
 #
@@ -15,7 +15,7 @@
 #         provided with the distribution.
 #     3.  Neither the name of the owner nor the names of its contributors may be used to endorse
 #         or promote products derived from this software without specific prior written permission.
-#
+# 
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 # IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 # FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE
@@ -27,36 +27,58 @@
 #
 
 
-Import(['clean_envs'])
+import SCons
+import string
+import array
+import os
 
-tools_env = clean_envs['userspace'].Clone()
+
+tools = ['gcc', 'g++', 'gnulink', 'ar', 'gas']
 
 
-# Build Library
-lib_srcs = Split('''
-    mailbox.c
-    ws2811.c
-    pwm.c
-    dma.c
-    rpihw.c
-''')
+def linux_tools(env):
+    for tool in tools:
+        env.Tool(tool)
 
-version_hdr = tools_env.Version('version')
-ws2811_lib = tools_env.Library('libws2811', lib_srcs)
-tools_env['LIBS'].append(ws2811_lib)
+    if not env['V']:
+        env['ARCOMSTR']      = 'AR      ${TARGET}'
+        env['ASCOMSTR']      = 'AS      ${TARGET}'
+        env['CCCOMSTR']      = 'CC      ${TARGET}'
+        env['CXXCOMSTR']     = 'C++     ${TARGET}'
+        env['LINKCOMSTR']    = 'LINK    ${TARGET}'
+        env['RANLIBCOMSTR']  = 'RANLIB  ${TARGET}'
 
-# Shared library (if required)
-ws2811_slib = tools_env.SharedLibrary('libws2811', lib_srcs)
+def linux_flags(env):
+    env.MergeFlags({
+        'CPPFLAGS' : '''
+            -fPIC
+            -g
+            -O2
+            -Wall
+            -Wextra
+            -Werror
+        '''.split(),
+    }),
+    env.MergeFlags({
+        'LINKFLAGS' : '''
+        '''.split()
+    })
 
-# Test Program
-srcs = Split('''
-    main.c
-''')
 
-objs = []
-for src in srcs:
-   objs.append(tools_env.Object(src))
+def linux_builders(env):
+    env.Append(BUILDERS = {
+        'Program' : SCons.Builder.Builder(
+            action = SCons.Action.Action('${LINK} -o ${TARGET} ${SOURCES} ${LINKFLAGS}',
+                                         '${LINKCOMSTR}'),
+        ),
+    })
+    return 1
 
-test = tools_env.Program('test', objs + tools_env['LIBS'])
 
-Default([test, ws2811_lib])
+# The following are required functions by SCons when incorporating through tools
+def exists(env):
+    return 1
+
+def generate(env, **kwargs):
+    [f(env) for f in (linux_tools, linux_flags, linux_builders)]
+

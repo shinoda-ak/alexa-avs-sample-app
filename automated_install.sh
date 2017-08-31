@@ -592,7 +592,7 @@ sudo pip install tendo
 
 cd $tLED_Loc
 chmod +x host_demo.exe
-cd rpi_ws281x-master
+cd rpi_ws281x
 sudo scons
 cd python
 sudo python setup.py install

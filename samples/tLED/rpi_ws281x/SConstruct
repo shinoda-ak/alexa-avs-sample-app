@@ -1,5 +1,5 @@
 #
-# linux.py
+# SConstruct
 #
 # Copyright (c) 2014 Jeremy Garff <jer @ jers.net>
 #
@@ -27,57 +27,50 @@
 #
 
 
-import SCons
-import string
-import array
 import os
 
 
-tools = ['gcc', 'g++', 'gnulink', 'ar', 'gas']
+opts = Variables()
+opts.Add(BoolVariable('V',
+                      'Verbose build',
+                      False))
 
+opts.Add('TOOLCHAIN',
+         'Set toolchain for cross compilation (e.g. arm-linux-gnueabihf)',
+         '')
 
-def linux_tools(env):
-    for tool in tools:
-        env.Tool(tool)
+platforms = [ 
+    [
+        'userspace',            # Target Name
+        [ 'linux', 'version' ], # Scons tool (linux, avr, etc.)
+        {                       # Special environment setup
+            'CPPPATH' : [
+            ],
+            'LINKFLAGS' : [
+                "-lrt",
+            ],
+        },
+    ], 
+]
 
-    if not env['V']:
-        env['ARCOMSTR']      = 'AR      ${TARGET}'
-        env['ASCOMSTR']      = 'AS      ${TARGET}'
-        env['CCCOMSTR']      = 'CC      ${TARGET}'
-        env['CXXCOMSTR']     = 'C++     ${TARGET}'
-        env['LINKCOMSTR']    = 'LINK    ${TARGET}'
-        env['RANLIBCOMSTR']  = 'RANLIB  ${TARGET}'
+clean_envs = {}
+for platform, tool, flags in platforms:
+    env = Environment(
+        options = opts,
+        tools = tool,
+        toolpath = ['.'],
+        ENV = {'PATH' : os.environ['PATH']},
+        LIBS = [],
+    )
+    env.MergeFlags(flags)
+    clean_envs[platform] = env
 
-def linux_flags(env):
-    env.MergeFlags({
-        'CPPFLAGS' : '''
-            -fPIC
-            -g
-            -O2
-            -Wall
-            -Werror
-        '''.split(),
-    }),
-    env.MergeFlags({
-        'LINKFLAGS' : '''
-        '''.split()
-    })
+Help(opts.GenerateHelpText(clean_envs))
 
+if env['TOOLCHAIN'] != '':
+    env['CC'] = env['TOOLCHAIN'] + '-gcc'
+    env['AR'] = env['TOOLCHAIN'] + '-ar'
 
-def linux_builders(env):
-    env.Append(BUILDERS = {
-        'Program' : SCons.Builder.Builder(
-            action = SCons.Action.Action('${LINK} -o ${TARGET} ${SOURCES} ${LINKFLAGS}',
-                                         '${LINKCOMSTR}'),
-        ),
-    })
-    return 1
-
-
-# The following are required functions by SCons when incorporating through tools
-def exists(env):
-    return 1
-
-def generate(env, **kwargs):
-    [f(env) for f in (linux_tools, linux_flags, linux_builders)]
+Export(['clean_envs'])
+SConscript('SConscript');
 
