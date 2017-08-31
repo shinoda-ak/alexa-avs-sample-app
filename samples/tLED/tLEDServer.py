@@ -1,22 +1,22 @@
 #!/usr/bin/python
 # Copyright 2017 Conexant Systems, LLC
- 
- 
+
+
 # Permission is hereby granted by Conexant, free of charge, to any developer obtaining a copy
-# of this software and associated documentation files (the "Software"), 
+# of this software and associated documentation files (the "Software"),
 # to download, use, copy, modify, merge and distribute the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
- 
+
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
- 
+
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.  CONEXANT RESERVES THE RIGHT TO MAKE CHANGES TO THE SOFTWARE 
+# SOFTWARE.  CONEXANT RESERVES THE RIGHT TO MAKE CHANGES TO THE SOFTWARE
 # WITHOUT NOTIFICATION.
 
 
@@ -40,6 +40,8 @@ class myHandler(BaseHTTPRequestHandler):
 	def do_GET(self):
 		#Split path and variables
 		splitpath = self.path.split("?")
+
+                print "GET: " , self.path
 
 		if splitpath[0] =="/Ready":
 			#print "Ready"
@@ -185,12 +187,12 @@ class myHandler(BaseHTTPRequestHandler):
 		print "do_HEAD"
 		return
 
-			
+
 try:
 	#Create a web server and define the handler to manage the incoming request
 	server = HTTPServer(('', PORT_NUMBER), myHandler)
 	print 'Started httpserver on port ' , PORT_NUMBER
-	
+
 	#Wait forever for incoming http requests
 	server.serve_forever()
 

@@ -552,7 +552,7 @@ if [ -f $Java_Client_Loc/pom.xml ]; then
   rm $Java_Client_Loc/pom.xml
 fi
 cp $Java_Client_Loc/pom_pi.xml $Java_Client_Loc/pom.xml
-cd $Java_Client_Loc && mvn validate && mvn install && cd $Origin
+cd $Java_Client_Loc && mvn validate && mvn install -Dalpn-boot.version=8.1.6.v20151105 && cd $Origin
 
 echo "========== Installing Companion Service =========="
 cd $Companion_Service_Loc && npm install && cd $Origin
@@ -602,8 +602,7 @@ cd $Recording_Agent_Loc
 make
 chmod +x run.sh
 
-
-chown -R $User:$Group $Origin
+sudo chown -R $User:$Group $Origin
 chown -R $User:$Group /home/$User/.asoundrc
 
 cp $Origin/leftarc /home/$User/leftarc
